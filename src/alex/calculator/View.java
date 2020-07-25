@@ -16,22 +16,28 @@ public class View {
             "/", "/x", "%",
             "v", "xy", "="
     };*/
+    public enum OperationType {
+        VOID_OPERATION,
+        UNARY_OPERATION,
+        BINARY_OPERATION,
+        EQUAL_OPERATION
+    }
     public enum Operations {
-        Clear(0, "C"),
-        Memory(0,"M"),
-        Remember(0, "R"),
-        Add(2, "+"),
-        Subtract(2,"-"),
-        Multiply(2,"*"),
-        Divide(2, "/"),
-        Reciprocal(1, "/x"),
-        Percent(2, "%"),
-        SquareRoot(1, "v"),
-        Power(2, "xy"),
-        Equal(3, "=");
+        Clear(OperationType.VOID_OPERATION, "C"),
+        Memory(OperationType.VOID_OPERATION,"M"),
+        Remember(OperationType.VOID_OPERATION, "R"),
+        Add(OperationType.BINARY_OPERATION, "+"),
+        Subtract(OperationType.BINARY_OPERATION,"-"),
+        Multiply(OperationType.BINARY_OPERATION,"*"),
+        Divide(OperationType.BINARY_OPERATION, "/"),
+        Reciprocal(OperationType.UNARY_OPERATION, "/x"),
+        Percent(OperationType.BINARY_OPERATION, "%"),
+        SquareRoot(OperationType.UNARY_OPERATION, "v"),
+        Power(OperationType.BINARY_OPERATION, "xy"),
+        Equal(OperationType.EQUAL_OPERATION, "=");
 
         private String caption;
-        private int action;
+        private OperationType operationType;
 
 /*        public String getCaption() {
             return caption;
@@ -40,11 +46,12 @@ public class View {
             return action;
         }*/
 
-        Operations(int action, String caption) {
+        Operations(OperationType operationType, String caption) {
             // Assign to instance variables here
-            this.action = action;
+            this.operationType = operationType;
             this.caption = caption;
         }
+
         // Provide getter methods here.
     }
     public static String[] inputs = {
@@ -125,31 +132,31 @@ public class View {
             //String caption = operations[i + j * 3];
             int x = 200 + i * 60;
             int y = 45 + j * 40;
-            int action = operation.action;
+            OperationType operationType = operation.operationType;
             String caption = operation.caption;
             OperationButton button = null;
-            if (action == 0) {
+            if (operationType == OperationType.VOID_OPERATION) {
                 button = new OperationButton(
                         app,
                         x, y,
                         new VoidOperationAction(app, caption)
                 );
             }
-            if (action == 1) {
+            if (operationType == OperationType.UNARY_OPERATION) {
                 button = new OperationButton(
                         app,
                         x, y,
                         new UnaryOperationAction(app, caption)
                 );
             }
-            if (action == 2) {
+            if (operationType == OperationType.BINARY_OPERATION) {
                 button = new OperationButton(
                         app,
                         x, y,
                         new BinaryOperationAction(app, caption)
                 );
             }
-            if (action == 3) {
+            if (operationType == OperationType.EQUAL_OPERATION) {
                 button = new OperationButton(
                         app,
                         x, y,
